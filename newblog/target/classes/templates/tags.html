@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标签</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/lib/editormd/css/editormd.min.css">
+    <link rel="stylesheet" href="../static/css/typo.css">
+    <link rel="stylesheet" href="../static/css/me.css">
+    <link rel="stylesheet" href="../static/css/animate.css">
+    <link rel="stylesheet" href="../static/lib/prism/prism.css">
+    <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css">
+</head>
+<body>
+
+<!--导航-->
+<nav class="ui inverted attached segment m-padded-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item">Blog</h2>
+            <a href="#" th:href="@{/index}" class=" m-item item m-mobile-hide"><i class="mini home icon"></i>首页</a>
+            <a href="#" th:href="@{/type}" class=" m-item item m-mobile-hide"><i class="mini idea icon"></i>分类</a>
+            <a href="#" th:href="@{/tag}" class="active m-item item m-mobile-hide"><i class="mini tags icon"></i>标签</a>
+            <a href="#" th:href="@{/archive}" class="m-item item m-mobile-hide"><i class="mini clone icon"></i>归档</a>
+            <a href="#" th:href="@{/about}" class="m-item item m-mobile-hide"><i class="mini info icon"></i>关于我</a>
+            <div class="right m-item item m-mobile-hide">
+                <!--transparent透明-->
+                <!--ui icon inverted transparent  input m-margin-tb-tiny-->
+                <form name="search" action="#" th:action="@{/search/value}" method="post" target="_blank">
+                    <div class="ui icon inverted  input m-margin-tb-tiny">
+                        <input type="text" name="searchValue" placeholder="Search...." th:value="${searchValue}">
+                        <i onclick="document.forms['search'].submit()" class="search link icon"></i>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+<!--中间内容-->
+<div>
+    <div class="m-container-small m-padded-tb-big">
+
+        <!--header-->
+        <div class="ui top attached segment">
+            <div class="ui middle aligned two column grid">
+                <div class="column">
+                    <h3 class="ui teal header">标签</h3>
+                </div>
+
+                <div class="right aligned column">
+                    共 <h2 class="ui orange header m-inline-block m-text-thin" th:text="${tagNum}">
+                    14 </h2> 个
+                </div>
+            </div>
+        </div>
+
+        <div class="ui attached segment m-padded-tb-large">
+            <div class="ui labeled button m-margin-tb-tiny" th:each="tagVo: ${tagVoList}">
+
+                <a href="#"
+                   th:href="@{/tag/{id}(id=${tagVo.tag.id})}"
+                   th:classappend="${tagVo.tag.id==activeTagId} ? 'teal'"
+                   th:text="${tagVo.tag.name}"
+                   class="ui basic  button">
+                    思考与感悟</a>
+                <!--    <span  th:href="@{/tag/{id}(id=${tagVo.tag.id})}"
+                           th:classappend="${tagVo.tag.id==activeTagId} ? 'teal'"
+                           th:text="${tagVo.tag.name}">方法论</span>-->
+                <div class="ui basic  left pointing label" th:text="${tagVo.blogToTagsNumber}">23</div>
+            </div>
+
+        </div>
+
+
+        <div class="ui  attached teal segment">
+            <!--content-->
+            <div class="ui padded vertical segment m-padded-tb" th:each="tagDetailVo:${tagDetailVos}">
+                <div class="ui mobile reversed stackable grid">
+
+                    <div class="eleven wide column ">
+                        <h3 class="ui header"><a href="#" class="m-black"  th:href="@{/blogDetail/{id}(id=${tagDetailVo.blog.id})}"
+                                                 target="_blank" th:text="${tagDetailVo.blog.title}">人间四月天</a></h3>
+                        <p class="m-text" th:text="${tagDetailVo.blog.description}">走过那么多的路，遇见形形的人，才发现世界上的人好坏各一半，
+                            你会遇到对你微笑或给你帮助的好人，也会遇见无聊甚至小偷的坏人时间推移，
+                            而有些人看似亲密无间，一旦触及本身利益就变得陌生的可怕时光可以带走很多东西，
+                            唯有最真的那份友谊距离无法阻断，时光也无法冲淡。
+
+
+                        </p>
+                        <div class="ui grid">
+                            <div class="eleven wide column">
+
+                                <div class="ui mini horizontal link list">
+
+                                    <!--作者-->
+                                    <div class="item">
+                                        <!--th:src="@{${blog.user.headportrait}}-->
+                                        <img src="../static/images/id.jpg" th:src="${tagDetailVo.user.avatar}"
+                                             width="16" height="16" alt=""
+                                             class="ui rounded image">
+                                        <div class="content">
+                                            <a href="#" class="header" th:text="${tagDetailVo.user.nickname}">罗天天</a>
+                                            <!--<div class="header">罗天天</div>-->
+                                        </div>
+                                    </div>
+                                    <!--时间-->
+                                    <div class="item">
+                                        <i class="calendar icon"></i>&nbsp <span
+                                            th:text="${#dates.format(tagDetailVo.blog.updateTime,'yyyy-MM-dd')}">2020-10-15</span>
+                                    </div>
+                                    <!--浏览次数-->
+                                    <div class="item">
+                                        <i class="eye icon"></i>&nbsp<span
+                                            th:text="${tagDetailVo.blog.views}">254</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="right aligned five wide column">
+                                <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin"
+                                   th:text="${tagDetailVo.type.name}">认知升级</a>
+                            </div>
+                            <div class="row">
+                                <div class="column">
+                                    <a href="#" target="_blank"
+                                       class="ui basic label  m-padded-mini"
+                                       th:each="tag:${tagDetailVo.tags}"
+                                       th:text="${tag.name}">认知升级</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="  five wide column">
+
+
+                        <a href="#" class="_blank">
+                            <img src="../static/images/girl.jpg" th:src="@{${tagDetailVo.blog.firstPicture}}"
+                                 width="130"
+                                 height="200" alt=""
+                                 class="ui rounded image">
+                        </a>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!--底部-->
+<footer class="ui inverted vertical segment m-padded-tb-massive">
+    <div class="ui center aligned container">
+        <div class="ui inverted divided stackable grid">
+            <div class="three wide column">
+                <div class="ui inverted link list">
+                    <div class="item">
+                        <img src="../static/images/wechart.jpg" th:src="@{~/static/images/wechart.jpg}"
+                             class="ui rounded image" alt="" style="width: 110px">
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">最新博客</h4>
+                <div id="newblog-container">
+                    <div class="ui inverted link list" th:fragment="newblogList">
+                        <a href="#" target="_blank"  th:href="@{/blogDetail/{id}(id=${blog.id})}"
+                           class="item m-text-thin" th:each="blog:${blogList}" th:text="${blog.title}">用户故事（User
+                            Story）</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">联系我</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item m-text-thin" th:text="${user.mailbox}"></a>
+                    <a href="#" class="item m-text-thin" th:text="${user.nickname}"></a>
+                </div>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">Blog</h4>
+                <p class="m-text-thin m-text-spaced m-opacity-mini">
+                    这是我的个人博客、会分享关于编程、写作、思考相关的任何内容，希望可以给来到这儿的人有所帮助...</p>
+            </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2020-10-15 Designed by 罗天天</p>
+        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=鄂ICP备2020020895号" rel="external nofollow"
+           target="_blank">公安备案号：鄂ICP备2020020895号</a>
+
+
+    </div>
+
+</footer>
+
+
+<!--js引用-->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+<script src="../static/lib/prism/prism.js" th:src="@{~/static/lib/prism/prism.js}"></script>
+<script src="../static/lib/tocbot/tocbot.js" th:src="@{~/static/lib/tocbot/tocbot.js}"></script>
+<script src="../static/lib/qrcode/qrcode.js" th:src="@{~/static/lib/qrcode/qrcode.js}"></script>
+<script src="../static/lib/waypoints/jquery.waypoints.js"
+        th:src="@{~/static/lib/waypoints/jquery.waypoints.js}"></script>
+
+<!--手机端点击按钮-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    $('#payButton').popup({
+        popup: $('.payQR.popup'),
+        on: 'click',
+        position: 'bottom center'
+    });
+</script>
+</body>
+</html>

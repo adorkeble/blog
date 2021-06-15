@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>注册页面</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/nome.css">
+
+</head>
+<body>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="rg_layout">
+    <div class="rg_left">
+        <p>新用户注册</p>
+        <p>USER REGISTER</p>
+
+    </div>
+
+    <div class="rg_center">
+        <div class="rg_form">
+            <form id="blog-form" action="#"  th:object="${user}"
+                  th:action="@{/admin/register/out}" method="post" class="ui form">
+                <table>
+
+                    <br>
+                    <br>
+                    <tr>
+                        <td class="td_left"><label for="username">用户名</label></td>
+                        <td class="td_right"><input type="text" name="username" id="username"
+                                                    th:field="*{username}" placeholder="请输入用户名"></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><label for="password">密码</label></td>
+                        <td class="td_right"><input type="text" name="password"
+                                                    th:field="*{password}" id="password" placeholder="请输入密码">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><label for="mailbox">Email</label></td>
+                        <td class="td_right"><input type="text" name="mailbox"
+                                                    th:field="*{mailbox}"    id="mailbox" placeholder="请输入邮箱"></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><label for="nickname">姓名</label></td>
+                        <td class="td_right"><input type="text" name="nickname"
+                                                    th:field="*{nickname}" id="nickname" placeholder="请输入姓名"></td>
+                    </tr>
+                    <tr>
+                        <td class="td_left"><label for="avatar">头像</label></td>
+                        <td class="td_right"><input type="text" name="avatar"
+                                                    th:field="*{avatar}"   id="avatar" placeholder="请输入头像链接"></td>
+                    </tr>
+
+
+
+                <!--    <tr>
+                        <td class="td_left"><label for="checkcode">验证码</label></td>
+                        <td class="td_right"><input type="text" name="checkcode" id="checkcode" placeholder="请输入验证码">
+                            <img src="verify_code.jpg" id="img_check"></td>
+                    </tr>-->
+                    <tr>
+                        <td colspan="2" align="center"><input type="submit" name="checkcode" id="btn-sub" value="注册">
+                        </td>
+
+                    </tr>
+                </table>
+            </form>
+        </div>
+
+        <div class="ui mini negative message" th:unless="${#strings.isEmpty(message)}" th:text="${message}">注册成功</div>
+    </div>
+    <div class="rg_right">
+        <p>已有账号?<a href="#" th:href="@{/admin}">立即登录</a></p>
+    </div>
+
+</div>
+
+
+<script>
+    $('#btn-sub').click(function () {
+        $('#blog-form').submit();
+    });
+</script>
+</body>
+</html>

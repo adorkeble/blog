@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客登录</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+
+    <link rel="stylesheet" th:href="@{~/static/css/typo.css}" href="../../static/css/typo.css">
+    <link rel="stylesheet" th:href="@{~/static/css/me.css}" href="../../static/css/me.css">
+    <link rel="stylesheet" th:href="@{~/static/css/animate.css}" href="../../static/css/animate.css">
+    <link rel="stylesheet" th:href="@{~/static/lib/prism/prism.css}" href="../../static/lib/prism/prism.css">
+    <link rel="stylesheet" th:href="@{~/static/lib/tocbot/tocbot.css}" href="../../static/lib/tocbot/tocbot.css">
+    <link rel="stylesheet" th:href="@{~/static/lib/editormd/css/editormd.min.css}"
+          href="../../static/lib/editormd/css/editormd.min.css">
+</head>
+<body>
+
+<br>
+<br>
+<br>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<div class="m-container-small m-padded-tb-massive" style="max-width: 30em !important;">
+    <div class="ur container">
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+
+                <h2 class="ui teal image header">
+                    <div class="content">
+                        罗天天 之家
+                    </div>
+                </h2>
+                <form class="ui large form" id="login-form" method="post" action="#" th:action="@{/admin/login}">
+                    <div class="ui segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="username" placeholder="username">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" placeholder="password">
+                            </div>
+                        </div>
+                        <div class="ui mini  menu ">
+                            <button class="ui fluid large teal submit button" id="login_btn" onclick="login()">
+                                Login in
+                            </button>
+
+                            <button class="ui fluid large teal submit button" id="regiser_btn" onclick="registerTo()">
+                                Register
+                            </button>
+                        </div>
+
+
+                    </div>
+
+                    <div class="ui error mini message"></div>
+                    <div class="ui mini negative message" th:unless="${#strings.isEmpty(message)}" th:text="${message}">
+                        用户名和密码错误
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+<script src="../static/lib/prism/prism.js" th:src="@{~/static/lib/prism/prism.js}"></script>
+<script src="../static/lib/tocbot/tocbot.js" th:src="@{~/static/lib/tocbot/tocbot.js}"></script>
+<script src="../static/lib/qrcode/qrcode.js" th:src="@{~/static/lib/qrcode/qrcode.js}"></script>
+<script src="../static/lib/waypoints/jquery.waypoints.js"
+        th:src="@{~/static/lib/waypoints/jquery.waypoints.js}"></script>
+<script>
+    $('.ui.form').form({
+        fields: {
+            username: {
+                identifier: 'username',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入用户名'
+                }]
+            },
+            password: {
+                identifier: 'password',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入登录密码'
+                }]
+            }
+        }
+    });
+
+    $('#regiser_btn').click(function () {
+
+        window.location.href = "/admin/register";
+    });
+    $('#login_btn').click(function () {
+
+        $('#login-form').submit();
+    });
+</script>
+
+</body>
+</html>

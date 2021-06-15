@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+
+    <link rel="stylesheet" th:href="@{~/static/css/typo.css}" href="../../static/css/typo.css">
+    <link rel="stylesheet" th:href="@{~/static/css/me.css}" href="../../static/css/me.css">
+    <link rel="stylesheet" th:href="@{~/static/css/animate.css}" href="../../static/css/animate.css">
+    <link rel="stylesheet" th:href="@{~/static/lib/prism/prism.css}" href="../../static/lib/prism/prism.css">
+    <link rel="stylesheet" th:href="@{~/static/lib/tocbot/tocbot.css}" href="../../static/lib/tocbot/tocbot.css">
+    <link rel="stylesheet" th:href="@{~/static/lib/editormd/css/editormd.min.css}"
+          href="../../static/lib/editormd/css/editormd.min.css">
+</head>
+<body>
+<!--导航-->
+<nav class="ui inverted attached segment m-padded-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item">管理后台</h2>
+            <a href="#" th:href="@{/admin/blogs}" class="active m-item item m-mobile-hide"><i
+                    class="mini home icon"></i>博客</a>
+            <a href="#" th:href="@{/admin/types}" class="m-item item m-mobile-hide"><i class="mini idea icon"></i>分类</a>
+            <a href="#" th:href="@{/admin/tags}" class="m-item item m-mobile-hide"><i class="mini tags icon"></i>标签</a>
+
+            <div class="m-item right menu m-mobile-hide">
+                <div class="ui dropdown item">
+                    <div class="text">
+                        <img class="ui avatar image" src="../../static/images/id.jpg" th:src="${user.avatar}">
+                        <a href="#" class="header"
+                           th:text="${user.nickname}">罗天天</a>
+                    </div>
+
+
+                    <i class="dropdown icon"></i>
+
+                    <div class="menu">
+                        <a href="#" th:href="@{/admin}" class="item">注销</a>
+                        <a href="#" th:href="@{/admin/register}" class="item">注册</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+
+
+<!--次目录-->
+<div class="ui attached pointing menu">
+    <div class="ui container">
+        <div class="right menu">
+            <a href="#" th:href="@{/admin/blog}" class="teal  item">发布</a>
+            <a href="#" th:href="@{/admin/blogs}" class="active item">列表</a>
+        </div>
+    </div>
+</div>
+
+<!--中间内容-->
+<div class="m-container-small m-padded-tb-big">
+    <div class="ui container">
+
+        <input type="hidden" name="page">
+
+        <div id="table-container" class="ui  segment">
+            <table th:fragment="blogList" class="ui  celled compact teal  table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>标题</th>
+                    <th>作者</th>
+                    <th>类型</th>
+                    <th>是否推荐</th>
+                    <th>是否发布</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="indexVo:${indexVoList}">
+                    <td th:text="${indexVo.blog.id}">1</td>
+                    <td th:text="${indexVo.blog.title}">刻意练习菜单</td>
+                    <td th:text="${indexVo.user.username}">刻意练习菜单</td>
+                    <td th:text="${indexVo.type.name}">认知升级</td>
+                    <td th:text="${indexVo.blog.recommend} ? '是':'否'">是</td>
+                    <td th:text="${indexVo.blog.published} ? '发布':'草稿'">是</td>
+                    <td th:text="${#dates.format(indexVo.blog.updateTime,'yyyy-MM-dd')}">2015-10-01 09:23</td>
+
+                    <td>
+                        <!--th:href="@{/admin/blogs/{id}/input(id=${blog.id})}"-->
+                        <a href="#" th:href="@{/admin/blog/{id}/input(id=${indexVo.blog.id})}"
+                           class="ui mini teal basic  button" >编辑</a>
+                        <!--th:href="@{/admin/blogs/{id}/delete(id=${blog.id})}"-->
+                        <a href="#" th:href="@{/admin/blog/{id}/delete(id=${indexVo.blog.id})}"
+                           class="ui mini red basic  button">删除</a>
+                    </td>
+
+                </tr>
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <th colspan="9">
+                        <div class="m-margin-top">
+
+                            <a href="#" th:href="@{/admin/blog}"
+                               class="ui mini right floated teal basic button">新增</a>
+                        </div>
+                    </th>
+
+
+                </tr>
+                </tfoot>
+            </table>
+
+
+            <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+                <i class="close icon"></i>
+                <div class="header">提示：</div>
+                <p th:text="${message}"> 恭喜，操作成功！</p>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!--底部-->
+<footer class="ui inverted vertical segment m-padded-tb-massive">
+    <div class="ui center aligned container">
+        <div class="ui inverted divided stackable grid">
+            <div class="three wide column">
+                <div class="ui inverted link list">
+                    <div class="item">
+                        <img src="../static/images/wechart.jpg" th:src="@{~/static/images/wechart.jpg}"
+                             class="ui rounded image" alt="" style="width: 110px">
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">最新博客</h4>
+                <div id="newblog-container">
+                    <div class="ui inverted link list" th:fragment="newblogList">
+                        <a href="#" target="_blank" th:href="@{/blogDetail/{id}(id=${blog.id})}"
+                           class="item m-text-thin" th:each="blog:${blogList}" th:text="${blog.title}">用户故事（User
+                            Story）</a>
+                    </div>
+                </div>
+
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">联系我</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item m-text-thin" th:text="${user.mailbox}"></a>
+                    <a href="#" class="item m-text-thin" th:text="${user.nickname}"></a>
+                </div>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced ">Blog</h4>
+                <p class="m-text-thin m-text-spaced m-opacity-mini">
+                    这是我的个人博客、会分享关于编程、写作、思考相关的任何内容，希望可以给来到这儿的人有所帮助...</p>
+            </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2020-10-15 Designed by 罗天天</p>
+        <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=鄂ICP备2020020895号" rel="external nofollow"
+           target="_blank">公安备案号：鄂ICP备2020020895号</a>
+
+
+    </div>
+
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script src="../../static/lib/editormd/editormd.min.js"
+        th:src="@{~/static/lib/editormd/editormd.min.js}"></script>
+<!--手机端点击按钮-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+
+    $('.ui.dropdown').dropdown({
+        // 默认点击打开
+        on: 'hover'
+    });
+    //消息提示关闭初始化
+    $('.message .close')
+        .on('click', function () {
+            $(this)
+                .closest('.message')
+                .transition('fade');
+        });
+    $('#clear-btn')
+        .on('click', function () {
+            $('.ui.type.dropdown')
+                .dropdown('clear')
+            ;
+        })
+    ;
+
+
+    function page(obj) {
+        $("[name='page']").val($(obj).data("page"));
+        loaddata();
+    }
+
+    $("#search-btn").click(function () {
+        $("[name='page']").val(0);
+        loaddata();
+    });
+
+    function loaddata() {
+        $("#table-container").load(/*[[@{/admin/blogs/search}]]*/"/admin/blogs/search", {
+            title: $("[name='title']").val(),
+            typeId: $("[name='typeId']").val(),
+            recommend: $("[name='recommend']").prop('checked'),
+            page: $("[name='page']").val()
+        });
+    }
+</script>
+</body>
+</html>
